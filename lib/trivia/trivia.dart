@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:math' as math;
 
@@ -5,13 +6,17 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:html_unescape/html_unescape.dart';
+import 'package:chat_app/resources.dart';
 import 'package:chat_app/trivia/trivia_loading.dart';
+
+var triviaTimer;
 
 // Trivia Home Screen
 class Trivia extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+        debugShowCheckedModeBanner: false,
         home: Scaffold(
             body: Container(
                 decoration: BoxDecoration(
@@ -20,7 +25,7 @@ class Trivia extends StatelessWidget {
                         begin: Alignment.topCenter,
                         end: Alignment.bottomCenter)),
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 100.0),
+                  padding: const EdgeInsets.symmetric(vertical: 10.0),
                   child: Stack(
                     children: [
                       Align(
@@ -119,6 +124,7 @@ class TriviaGame extends StatefulWidget {
 class _TriviaGameState extends State<TriviaGame> {
   final response, index;
   var body;
+  int counter = 10;
   List answers;
   _TriviaGameState(this.response, this.index) {
     body = jsonDecode(this.response.body)["results"];
@@ -126,6 +132,18 @@ class _TriviaGameState extends State<TriviaGame> {
         [body[this.index]["correct_answer"]];
     answers.shuffle();
     print(answers);
+  }
+
+  void startTimer() {
+    triviaTimer = Timer.periodic(Duration(seconds: 1), (timer) {
+      if (counter > 0) {
+        setState(() {
+          counter--;
+        });
+      } else {
+        triviaTimer.cancel();
+      }
+    });
   }
 
   Color diffultyColor(String difficulty) {
@@ -140,8 +158,15 @@ class _TriviaGameState extends State<TriviaGame> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    startTimer();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return MaterialApp(
+        debugShowCheckedModeBanner: false,
         home: Scaffold(
             body: Container(
           decoration: BoxDecoration(
@@ -151,6 +176,18 @@ class _TriviaGameState extends State<TriviaGame> {
                   end: Alignment.bottomCenter)),
           child: ListView(
             children: [
+              Align(
+                  alignment: Alignment.topRight,
+                  child: Container(
+                      decoration: BoxDecoration(
+                          color: Colors.white, shape: BoxShape.circle),
+                      child: Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: Text("$counter",
+                            style: GoogleFonts.roboto(
+                                fontSize: 40.0, color: Colors.black),
+                            textAlign: TextAlign.center),
+                      ))),
               Center(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 64.0),
@@ -164,27 +201,27 @@ class _TriviaGameState extends State<TriviaGame> {
                           style: GoogleFonts.ubuntu(fontSize: 50.0),
                           textAlign: TextAlign.center),
                       RichText(
-                        text: TextSpan(
-                          children: [
-                            WidgetSpan(
-                              child: Text("Difficulty: ",
-                                  style: GoogleFonts.montserrat(
-                                      fontSize: 40.0, letterSpacing: 4.0),
-                                  textAlign: TextAlign.center),
-                            ),
-                            WidgetSpan(
-                              child: Text(
-                                  "${toBeginningOfSentenceCase(body[this.index]["difficulty"])}",
-                                  style: GoogleFonts.montserrat(
-                                      fontSize: 40.0,
-                                      letterSpacing: 4.0,
-                                      color: diffultyColor(
-                                          body[this.index]["difficulty"])),
-                                  textAlign: TextAlign.center),
-                            )
-                          ],
-                        ),
-                      ),
+                          text: TextSpan(
+                            children: [
+                              WidgetSpan(
+                                child: Text("Difficulty: ",
+                                    style: GoogleFonts.montserrat(
+                                        fontSize: 40.0, letterSpacing: 4.0),
+                                    textAlign: TextAlign.center),
+                              ),
+                              WidgetSpan(
+                                child: Text(
+                                    "${toBeginningOfSentenceCase(body[this.index]["difficulty"])}",
+                                    style: GoogleFonts.montserrat(
+                                        fontSize: 40.0,
+                                        letterSpacing: 4.0,
+                                        color: diffultyColor(
+                                            body[this.index]["difficulty"])),
+                                    textAlign: TextAlign.center),
+                              )
+                            ],
+                          ),
+                          textAlign: TextAlign.center),
                       Padding(padding: const EdgeInsets.only(top: 5.0)),
                       Divider(color: Colors.white),
                       Padding(padding: const EdgeInsets.only(top: 5.0)),
@@ -221,8 +258,6 @@ class QuestionButton extends StatefulWidget {
 class _QuestionButtonState extends State<QuestionButton> {
   final answer, body, index;
   _QuestionButtonState(this.answer, this.body, this.index);
-  bool answerGiven = false;
-  bool isCorrect;
 
   @override
   Widget build(BuildContext context) {
@@ -242,26 +277,16 @@ class _QuestionButtonState extends State<QuestionButton> {
                 ),
                 color: Colors.white,
                 shape: RoundedRectangleBorder(
-                    side: BorderSide(
-                        color: (answerGiven)
-                            ? ((isCorrect)
-                                ? Colors.greenAccent
-                                : Colors.redAccent[100])
-                            : null,
-                        width: 5.0),
                     borderRadius: BorderRadius.circular(60.0)),
                 margin: const EdgeInsets.all(15.0)),
           ],
         ),
-        onTap: (answerGiven)
-            ? null
-            : () {
-                setState(() {
-                  isCorrect = HtmlUnescape()
-                          .convert(body[this.index]["correct_answer"]) ==
-                      HtmlUnescape().convert(answer.toString());
-                  answerGiven = true;
-                });
-              });
+        onTap: () {
+          Navigator.push(context, MaterialPageRoute(builder: (context) {
+            return MaterialApp(
+                debugShowCheckedModeBanner: false,
+                home: Scaffold(body: Center(child: RiveAnimationController('rightanswer.riv'))));
+          }));
+        });
   }
 }

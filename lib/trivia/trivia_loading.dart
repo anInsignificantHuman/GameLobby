@@ -2,24 +2,14 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:chat_app/resources.dart';
 import 'package:chat_app/trivia/trivia.dart';
-
-var loadingAnimationOptions = [
-  SpinKitChasingDots(color: Colors.white, size: 80.0),
-  SpinKitCubeGrid(color: Colors.white, size: 80.0),
-  SpinKitDoubleBounce(color: Colors.white, size: 80.0),
-  SpinKitFadingCube(color: Colors.white, size: 80.0),
-  SpinKitFadingFour(color: Colors.white, size: 80.0),
-  SpinKitFoldingCube(color: Colors.white, size: 80.0),
-  SpinKitRotatingCircle(color: Colors.white, size: 80.0),
-  SpinKitSquareCircle(color: Colors.white, size: 80.0)
-];
 
 class TriviaLoadingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+        debugShowCheckedModeBanner: false,
         home: TriviaLoading(),
         theme: ThemeData(
             brightness: Brightness.dark,
@@ -37,8 +27,8 @@ class _TriviaLoadingState extends State<TriviaLoading> {
     var queryParameters = {'type': 'multiple', 'amount': '10'};
     var uri = Uri.https('opentdb.com', '/api.php', queryParameters);
     http.Response response = await http.get(uri);
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => TriviaGame(response, 0)));
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => TriviaGame(response, 0)));
   }
 
   @override
