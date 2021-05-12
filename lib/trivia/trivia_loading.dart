@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:chat_app/resources.dart';
 import 'package:chat_app/trivia/trivia.dart';
 
+// MaterialApp Wrapper For TriviaLoading
 class TriviaLoadingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -17,6 +18,7 @@ class TriviaLoadingScreen extends StatelessWidget {
   }
 }
 
+// Trivia Loading Screen
 class TriviaLoading extends StatefulWidget {
   @override
   _TriviaLoadingState createState() => _TriviaLoadingState();
