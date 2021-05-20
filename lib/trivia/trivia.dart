@@ -32,7 +32,7 @@ class Trivia extends StatelessWidget {
                       Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text("Trivia!",
+                          Text('Trivia!',
                               style: GoogleFonts.ubuntu(
                                   fontSize: 70.0,
                                   letterSpacing: 3.0,
@@ -50,7 +50,7 @@ class Trivia extends StatelessWidget {
                                     Padding(
                                         padding:
                                             const EdgeInsets.only(top: 35.0)),
-                                    Text("?",
+                                    Text('?',
                                         style: GoogleFonts.luckiestGuy(
                                           fontSize: 250.0,
                                         )),
@@ -66,7 +66,7 @@ class Trivia extends StatelessWidget {
                                       Padding(
                                           padding:
                                               const EdgeInsets.only(top: 35.0)),
-                                      Text("?",
+                                      Text('?',
                                           style: GoogleFonts.luckiestGuy(
                                             fontSize: 250.0,
                                           )),
@@ -97,7 +97,7 @@ class StartGameButton extends StatelessWidget {
         child: Card(
             child: Padding(
               padding: const EdgeInsets.all(15.0),
-              child: Text("START GAME",
+              child: Text('START GAME',
                   style: GoogleFonts.roboto(
                     fontSize: 27.0,
                     letterSpacing: 4.0,
@@ -128,9 +128,9 @@ class _TriviaGameState extends State<TriviaGame> {
   int counter = 9;
   List answers = [];
   _TriviaGameState(this.response, this.index) {
-    body = jsonDecode(this.response.body)["results"];
-    answers = body[this.index]["incorrect_answers"] +
-        [body[this.index]["correct_answer"]];
+    body = jsonDecode(this.response.body)['results'];
+    answers = body[this.index]['incorrect_answers'] +
+        [body[this.index]['correct_answer']];
     answers.shuffle();
     print(answers);
   }
@@ -187,7 +187,7 @@ class _TriviaGameState extends State<TriviaGame> {
                           color: Colors.white, shape: BoxShape.circle),
                       child: Padding(
                         padding: const EdgeInsets.all(12.0),
-                        child: Text("$counter",
+                        child: Text('$counter',
                             style: GoogleFonts.roboto(
                                 fontSize: 40.0, color: Colors.black),
                             textAlign: TextAlign.center),
@@ -196,7 +196,7 @@ class _TriviaGameState extends State<TriviaGame> {
                 Divider(color: Colors.white),
                 RelativeSpacer(context, 4.0),
                 Text(
-                    "Question ${this.index + 1} of 10 (${body[this.index]["category"].replaceAll("Entertainment: ", "")})",
+                    'Question ${this.index + 1} of 10 (${body[this.index]['category'].replaceAll('Entertainment: ', '')})',
                     style: GoogleFonts.ubuntu(fontSize: 50.0),
                     textAlign: TextAlign.center),
                 RelativeSpacer(context, 4.0),
@@ -204,19 +204,19 @@ class _TriviaGameState extends State<TriviaGame> {
                     text: TextSpan(
                       children: [
                         WidgetSpan(
-                          child: Text("Difficulty: ",
+                          child: Text('Difficulty: ',
                               style: GoogleFonts.montserrat(
                                   fontSize: 40.0, letterSpacing: 4.0),
                               textAlign: TextAlign.center),
                         ),
                         WidgetSpan(
                           child: Text(
-                              "${toBeginningOfSentenceCase(body[this.index]["difficulty"])}",
+                              '${toBeginningOfSentenceCase(body[this.index]['difficulty'])}',
                               style: GoogleFonts.montserrat(
                                   fontSize: 40.0,
                                   letterSpacing: 4.0,
                                   color: diffultyColor(
-                                      body[this.index]["difficulty"])),
+                                      body[this.index]['difficulty'])),
                               textAlign: TextAlign.center),
                         )
                       ],
@@ -225,7 +225,7 @@ class _TriviaGameState extends State<TriviaGame> {
                 RelativeSpacer(context, 4.0),
                 Divider(color: Colors.white),
                 RelativeSpacer(context, 4.0),
-                Text(HtmlUnescape().convert(body[this.index]["question"]),
+                Text(HtmlUnescape().convert(body[this.index]['question']),
                     style: GoogleFonts.montserrat(
                       fontSize: 30.0,
                       letterSpacing: 3.0,
@@ -284,7 +284,7 @@ class _QuestionButtonState extends State<QuestionButton> {
         ),
         onTap: () {
           Navigator.push(context, MaterialPageRoute(builder: (context) {
-            return ResultPage();
+            return ResultPage(true);
           }));
         });
   }
@@ -292,6 +292,10 @@ class _QuestionButtonState extends State<QuestionButton> {
 
 // Answer Result Screen
 class ResultPage extends StatelessWidget {
+  final bool isCorrect;
+  final String? correctAnswer;
+  ResultPage(this.isCorrect, [this.correctAnswer]);
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -306,7 +310,7 @@ class ResultPage extends StatelessWidget {
                   end: Alignment.bottomCenter)),
           child: Center(
               child: ListView(shrinkWrap: true, children: [
-            Text("Correct!",
+            Text('Correct!',
                 style: GoogleFonts.ubuntu(
                     fontSize: 80.0,
                     letterSpacing: 3.0,
