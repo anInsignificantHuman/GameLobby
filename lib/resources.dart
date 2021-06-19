@@ -13,7 +13,7 @@ var loadingAnimationOptions = [
   SpinKitFadingFour(color: Colors.white, size: 80.0),
   SpinKitFoldingCube(color: Colors.white, size: 80.0),
   SpinKitRotatingCircle(color: Colors.white, size: 80.0),
-  SpinKitSquareCircle(color: Colors.white, size: 80.0)
+  SpinKitSquareCircle(color: Colors.white, size: 80.0),
 ];
 
 // Widget For Displaying Rive Animations
@@ -59,16 +59,18 @@ class AdaptiveBuilder extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ResponsiveWrapper.builder(this.child,
-        minWidth: 450,
-        maxWidth: 2460,
-        defaultScale: true,
-        breakpoints: [
-          ResponsiveBreakpoint.resize(600, name: MOBILE),
-          ResponsiveBreakpoint.autoScale(800, name: TABLET),
-          ResponsiveBreakpoint.resize(1200, name: DESKTOP),
-          ResponsiveBreakpoint.autoScale(2460, name: '4k'),
-        ]);
+    return ResponsiveWrapper.builder(
+      this.child,
+      minWidth: 450,
+      maxWidth: 2460,
+      defaultScale: true,
+      breakpoints: [
+        ResponsiveBreakpoint.resize(600, name: MOBILE),
+        ResponsiveBreakpoint.autoScale(800, name: TABLET),
+        ResponsiveBreakpoint.resize(1200, name: DESKTOP),
+        ResponsiveBreakpoint.autoScale(2460, name: '4k'),
+      ],
+    );
   }
 }
 
@@ -89,6 +91,10 @@ class _RelativeSpacerState extends State<RelativeSpacer> {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(padding: EdgeInsets.only(top: this.percent / 100 * MediaQuery.of(context).size.height));
+    return Padding(
+      padding: EdgeInsets.only(
+        top: this.percent / 100 * MediaQuery.of(context).size.height,
+      ),
+    );
   }
 }

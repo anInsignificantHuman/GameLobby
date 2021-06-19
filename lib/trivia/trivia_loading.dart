@@ -10,11 +10,13 @@ class TriviaLoadingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        home: TriviaLoading(),
-        theme: ThemeData(
-            brightness: Brightness.dark,
-            visualDensity: VisualDensity.adaptivePlatformDensity));
+      debugShowCheckedModeBanner: false,
+      home: TriviaLoading(),
+      theme: ThemeData(
+        brightness: Brightness.dark,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+      ),
+    );
   }
 }
 
@@ -29,8 +31,12 @@ class _TriviaLoadingState extends State<TriviaLoading> {
     var queryParameters = {'type': 'multiple', 'amount': '10'};
     var uri = Uri.https('opentdb.com', '/api.php', queryParameters);
     http.Response response = await http.get(uri);
-    Navigator.push(context,
-        MaterialPageRoute(builder: (context) => TriviaGame(response, 0)));
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => TriviaGame(response, 0),
+      ),
+    );
   }
 
   @override
@@ -42,14 +48,19 @@ class _TriviaLoadingState extends State<TriviaLoading> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Container(
-            decoration: BoxDecoration(
-                gradient: LinearGradient(
-                    colors: [Color(0xff0d324d), Color(0xff7f5a83)],
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter)),
-            child: Center(
-                child: loadingAnimationOptions[
-                    Random().nextInt(loadingAnimationOptions.length)])));
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [Color(0xff0d324d), Color(0xff7f5a83)],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+        ),
+        child: Center(
+          child: loadingAnimationOptions[
+              Random().nextInt(loadingAnimationOptions.length)],
+        ),
+      ),
+    );
   }
 }

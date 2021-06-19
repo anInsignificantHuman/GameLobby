@@ -216,7 +216,9 @@ class _TriviaGameState extends State<TriviaGame> {
                       child: Text(
                         '$counter',
                         style: GoogleFonts.roboto(
-                            fontSize: 40.0, color: Colors.black),
+                          fontSize: 40.0,
+                          color: Colors.black,
+                        ),
                         textAlign: TextAlign.center,
                       ),
                     ),
@@ -225,7 +227,7 @@ class _TriviaGameState extends State<TriviaGame> {
                 Divider(color: Colors.white),
                 RelativeSpacer(context, 4.0),
                 Text(
-                  'Question ${this.index + 1} of 10 (${body[this.index]['category'].replaceAll('Entertainment: ', '')})',
+                  "Question ${this.index + 1} of 10 (${body[this.index]['category'].replaceAll('Entertainment: ', '')})",
                   style: GoogleFonts.ubuntu(fontSize: 50.0),
                   textAlign: TextAlign.center,
                 ),
