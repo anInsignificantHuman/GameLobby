@@ -33,12 +33,12 @@ class _RiveAnimationControllerState extends State<RiveAnimationController> {
 
   @override
   void initState() {
-    loadFile();
     super.initState();
+    loadFile();
   }
 
   void loadFile() async {
-    rootBundle.load(fileName).then((data) async {
+    await rootBundle.load(fileName).then((data) async {
       var file = RiveFile.import(data);
       var artboard = file.mainArtboard;
       artboard.addController(SimpleAnimation('go'));

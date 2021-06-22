@@ -3,7 +3,9 @@ import 'dart:convert';
 import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
+import 'package:lottie/lottie.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:circular_countdown_timer/circular_countdown_timer.dart';
 import 'package:intl/intl.dart';
 import 'package:html_unescape/html_unescape.dart';
 import 'package:chat_app/resources.dart';
@@ -22,7 +24,10 @@ class Trivia extends StatelessWidget {
         body: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
-              colors: [Color(0xff0d324d), Color(0xff7f5a83)],
+              colors: [
+                Color(0xff0d324d),
+                Color(0xff7f5a83),
+              ],
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
             ),
@@ -195,7 +200,10 @@ class _TriviaGameState extends State<TriviaGame> {
         body: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
-              colors: [Color(0xff0d324d), Color(0xff7f5a83)],
+              colors: [
+                Color(0xff0d324d),
+                Color(0xff7f5a83),
+              ],
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
             ),
@@ -204,23 +212,32 @@ class _TriviaGameState extends State<TriviaGame> {
             child: ListView(
               shrinkWrap: true,
               children: [
-                Align(
-                  alignment: Alignment.topRight,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      shape: BoxShape.circle,
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: Text(
-                        '$counter',
-                        style: GoogleFonts.roboto(
-                          fontSize: 40.0,
-                          color: Colors.black,
-                        ),
-                        textAlign: TextAlign.center,
+                Padding(
+                  padding: const EdgeInsets.only(right: 8.0),
+                  child: Align(
+                    alignment: Alignment.topRight,
+                    child: CircularCountDownTimer(
+                      width: 60.0,
+                      height: 60.0,
+                      duration: 10,
+                      initialDuration: 1,
+                      backgroundColor: Colors.white,
+                      fillColor: Color(0xff03dac5),
+                      ringColor: Color(0xffbdbdbd),
+                      isReverse: true,
+                      isReverseAnimation: true,
+                      textStyle: GoogleFonts.roboto(
+                        fontSize: 40.0,
+                        color: Colors.black,
                       ),
+                      onComplete: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ResultPage(true),
+                          ),
+                        );
+                      },
                     ),
                   ),
                 ),
@@ -233,42 +250,45 @@ class _TriviaGameState extends State<TriviaGame> {
                 ),
                 RelativeSpacer(context, 4.0),
                 RichText(
-                    text: TextSpan(
-                      children: [
-                        WidgetSpan(
-                          child: Text(
-                            'Difficulty: ',
-                            style: GoogleFonts.montserrat(
-                              fontSize: 40.0,
-                              letterSpacing: 4.0,
-                            ),
-                            textAlign: TextAlign.center,
+                  text: TextSpan(
+                    children: [
+                      WidgetSpan(
+                        child: Text(
+                          'Difficulty: ',
+                          style: GoogleFonts.montserrat(
+                            fontSize: 40.0,
+                            letterSpacing: 4.0,
                           ),
+                          textAlign: TextAlign.center,
                         ),
-                        WidgetSpan(
-                          child: Text(
-                            '${toBeginningOfSentenceCase(body[this.index]['difficulty'])}',
-                            style: GoogleFonts.montserrat(
-                              fontSize: 40.0,
-                              letterSpacing: 4.0,
-                              color:
-                                  diffultyColor(body[this.index]['difficulty']),
-                            ),
-                            textAlign: TextAlign.center,
+                      ),
+                      WidgetSpan(
+                        child: Text(
+                          '${toBeginningOfSentenceCase(body[this.index]['difficulty'])}',
+                          style: GoogleFonts.montserrat(
+                            fontSize: 40.0,
+                            letterSpacing: 4.0,
+                            color:
+                                diffultyColor(body[this.index]['difficulty']),
                           ),
+                          textAlign: TextAlign.center,
                         ),
-                      ],
-                    ),
-                    textAlign: TextAlign.center),
+                      ),
+                    ],
+                  ),
+                  textAlign: TextAlign.center,
+                ),
                 RelativeSpacer(context, 4.0),
                 Divider(color: Colors.white),
                 RelativeSpacer(context, 4.0),
-                Text(HtmlUnescape().convert(body[this.index]['question']),
-                    style: GoogleFonts.montserrat(
-                      fontSize: 30.0,
-                      letterSpacing: 3.0,
-                    ),
-                    textAlign: TextAlign.center),
+                Text(
+                  HtmlUnescape().convert(body[this.index]['question']),
+                  style: GoogleFonts.montserrat(
+                    fontSize: 30.0,
+                    letterSpacing: 3.0,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
                 RelativeSpacer(context, 4.0),
                 ...[
                   for (var answer in answers)
@@ -282,8 +302,9 @@ class _TriviaGameState extends State<TriviaGame> {
         ),
       ),
       theme: ThemeData(
-          brightness: Brightness.dark,
-          visualDensity: VisualDensity.adaptivePlatformDensity),
+        brightness: Brightness.dark,
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+      ),
     );
   }
 }
@@ -309,13 +330,15 @@ class _QuestionButtonState extends State<QuestionButton> {
           Card(
             child: Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Text(HtmlUnescape().convert(answer.toString()),
-                  style: GoogleFonts.montserrat(
-                    fontSize: 30.0,
-                    letterSpacing: 4.0,
-                    color: Colors.black,
-                  ),
-                  textAlign: TextAlign.center),
+              child: Text(
+                HtmlUnescape().convert(answer.toString()),
+                style: GoogleFonts.montserrat(
+                  fontSize: 30.0,
+                  letterSpacing: 4.0,
+                  color: Colors.black,
+                ),
+                textAlign: TextAlign.center,
+              ),
             ),
             color: Colors.white,
             shape: RoundedRectangleBorder(
@@ -356,7 +379,10 @@ class ResultPage extends StatelessWidget {
         body: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
-              colors: [Color(0xff0d324d), Color(0xff7f5a83)],
+              colors: [
+                Color(0xff0d324d),
+                Color(0xff7f5a83),
+              ],
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
             ),
@@ -365,18 +391,18 @@ class ResultPage extends StatelessWidget {
             child: ListView(
               shrinkWrap: true,
               children: [
-                Text((isCorrect) ? 'Correct!' : 'Incorrect!',
-                    style: GoogleFonts.ubuntu(
-                      fontSize: 80.0,
-                      letterSpacing: 3.0,
-                      fontWeight: FontWeight.bold,
-                    ),
-                    textAlign: TextAlign.center),
-                Container(
-                  height: 700,
-                  child: (isCorrect)
-                      ? RiveAnimationController('animations/rightanswer.riv')
-                      : RiveAnimationController('animations/wronganswer.riv'),
+                Text(
+                  (isCorrect) ? 'Correct!' : 'Incorrect!',
+                  style: GoogleFonts.ubuntu(
+                    fontSize: 80.0,
+                    letterSpacing: 3.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                Lottie.asset(
+                  'animations/correct.json',
+                  repeat: false,
                 ),
               ],
             ),
